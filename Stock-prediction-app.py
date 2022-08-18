@@ -6,7 +6,6 @@ import base64
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from bs4 import BeautifulSoup
 import requests
 import json 
 import time
@@ -33,7 +32,7 @@ This app predict the value of a stock market
 # About
 expander_bar = st.expander("About")
 expander_bar.markdown("""
-* **Python libraries** : base64, p andas, streamlit, numpy, matplotlib
+* **Python libraries** : pandas, streamlit, numpy, matplotlib
 * **Data Source** : CoinMartketCap
 * **Credit** : ...
 """)
@@ -70,3 +69,4 @@ def load_data():
     return data
 
 df = load_data()
+df.to_csv('Dataset/GOOGL_AAPL_MSFT_AMZN_2000_1d.csv')
