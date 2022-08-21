@@ -10,6 +10,7 @@ import requests
 import json 
 import time
 import yfinance as yf
+from prediction_page import show_prediction_page
 
 # Page layout
 st.set_page_config(layout="wide")
@@ -45,28 +46,34 @@ col2, col3 = st.columns((2,1))
 
 #----------------------------------------------#
 # Sidebar and Main panel
-col1.header('Input Options')
+col1.header('Features')
 
-## Sidebar - Currency price unit
-# currency_price_unit = col1.selectbox('Select currency for price', ('USD', 'BTC', 'ETH'))
+## Sidebar - Select the page
+page = col1.selectbox('Predict Or Explore', ('Predict', 'Explore'))
 
-currency_price_unit = col2.selectbox('Select currency for price', ('None', 'GOOGL', 'AAPL', 'MSFT', 'AMZN'))
+show_prediction_page()
 
-@st.cache
-def load_data():
+# if page == 'Predict':
+#     show_prediction_page()
+# else :
+#     show_explore_page()
+
+
+# @st.cache
+# def load_data():
     
-    tickerSymbols = "GOOGL AAPL MSFT AMZN"
+#     tickerSymbols = "GOOGL AAPL MSFT AMZN TSLA"
 
-    data  = yf.download(tickers = tickerSymbols,
-                        start = "2000-01-01",
-                        end = "2022-08-17",
-                        interval = "1d",
-                        group_by = 'ticker',
-                        # Mass Downloading
-                        threads = True,
-                        proxy = None
-                        )
-    return data
+#     data  = yf.download(tickers = tickerSymbols,
+#                         start = "2000-01-01",
+#                         end = "2022-08-17",
+#                         interval = "1d",
+#                         group_by = 'ticker',
+#                         # Mass Downloading
+#                         threads = True,
+#                         proxy = None
+#                         )
+#     return data
 
-df = load_data()
-df.to_csv('Dataset/GOOGL_AAPL_MSFT_AMZN_2000_1d.csv')
+# df = load_data()
+# df.to_csv('Dataset/GOOGL_AAPL_MSFT_AMZN_TSLA_2000_1d.csv')
