@@ -20,15 +20,15 @@ def load_data():
     
     tickerSymbols = "TSLA"
 
-    data  = yf.download(tickers = tickerSymbols,
-                        start = "2000-01-01",
-                        end = "2022-08-17",
-                        interval = "1d",
-                        group_by = 'ticker',
-                        # Mass Downloading
-                        threads = True,
-                        proxy = None
-                        )
+    data = yf.download(tickers=tickerSymbols,
+                       start="2000-01-01",
+                       end="2022-08-17",
+                       interval="1d",
+                       group_by='ticker',
+                       # Mass Downloading
+                       threads=True,
+                       proxy=None
+                       )
     # data.to_csv('Dataset/TSLA_2010_1d.csv')
     return data
 
@@ -38,10 +38,11 @@ def load_model(name_model):
 
 # Scale Data (Adjusted Close column)
 def scale_data(df):
-    minmax = MinMaxScaler().fit(df.iloc[:, 4:5].astype('float32')) # Adjusted Close index
-    df_log = minmax.transform(df.iloc[:, 4:5].astype('float32')) # Adjusted Close index
+    # Adjusted Close index
+    minmax = MinMaxScaler().fit(df.iloc[:, 4:5].astype('float32'))
+    df_log = minmax.transform(df.iloc[:, 4:5].astype('float32'))
     df_log = pd.DataFrame(data=df_log, index=df.index)
-    df_log.rename(columns={0:'Adj Close'}, inplace=True)
+    df_log.rename(columns={0: 'Adj Close'}, inplace=True)
     return df_log, minmax
 
 # Preprocessing
@@ -85,10 +86,10 @@ def split_train_test(X, y, split_percentage=0.8):
 
 def simulator(predictions,
               real_values_stock,
-              n_steps_out = 7,
-              initial_inventory_money = 10000,
-              max_buy = 1, # Nb max of stock to buy 
-              max_sell = 1 # Nb max of stock to sell
+              n_steps_out=7,
+              initial_inventory_money=10000,
+              max_buy=1, # Nb max of stock to buy
+              max_sell=1 # Nb max of stock to sell
               ):
 
     # Convert df real_values_stock into an array 
@@ -96,12 +97,12 @@ def simulator(predictions,
 
     # Keeps track of all the trades (buy/sell)
     df_historic_trades = pd.DataFrame(columns={'inventory_money',
-                                            'buy_day',
-                                            'sell_day', 
-                                            'buy_price',
-                                            'sell_price'
+                                               'buy_day',
+                                               'sell_day',
+                                               'buy_price',
+                                               'sell_price'
                                                }
-                                    ) 
+                                     )
 
     # Keeps track of what happened for each trade
     logs = [] 
@@ -123,19 +124,18 @@ def simulator(predictions,
 
         # Not enough money to buy
         if inventory_money < buy_price * max_buy :
-            new_log += f"Day {buy_day} : Total balance : {inventory_money}, Not enough money to buy {max_buy} stock(s) at {buy_price}$"
+            new_log = f"Day {buy_day} : Total balance : {inventory_money}, Not enough money to buy {max_buy} stock(s) at {buy_price}$"
             new_log += "\n"
             logs.append(new_log)
-            # print(f"Day {buy_day} : Total balance : {inventory_money}, Not enough money to buy {max_buy} stock(s) at {buy_price}$ \n")
-        
-        else :
+
+        else:
             inventory_money += (sell_price * max_sell) -(buy_price * max_buy)
 
-            new_row = pd.DataFrame({'inventory_money' : inventory_money, 
-                                    'buy_day' : pd.to_datetime(buy_day_format_datetime).date(), 
-                                    'buy_price' : buy_price, 
-                                    'sell_day' : pd.to_datetime(sell_day_format_datetime).date(), 
-                                    'sell_price' : sell_price
+            new_row = pd.DataFrame({'inventory_money': inventory_money,
+                                    'buy_day': pd.to_datetime(buy_day_format_datetime).date(),
+                                    'buy_price': buy_price,
+                                    'sell_day': pd.to_datetime(sell_day_format_datetime).date(),
+                                    'sell_price': sell_price
                                     },
                                     index=[0]
                                   )
@@ -180,7 +180,7 @@ def plot_trades(df, df_historic_trades, mean_predictions):
                             close=df['Close'],
                             name='Stock'
                     ),
-                )
+                 )
 
     # Buy Trades
     fig.add_trace(go.Scatter(x=df_historic_trades['buy_day'], y=df_historic_trades['buy_price'],
@@ -222,8 +222,8 @@ def plot_trades(df, df_historic_trades, mean_predictions):
                  )
     fig.update_layout(
         xaxis_rangeslider_visible=False,
-        width=1200,
-        height=800,
+        width=850,
+        height=718,
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -322,10 +322,11 @@ def show_prediction_page():
     fig = plot_trades(df, df_historic_trades, mean_predictions)
     col1_3.plotly_chart(fig, use_container_width=False, config=dict({'scrollZoom': True}))
     
-    col2_3.dataframe(df_historic_trades[['buy_day', 'buy_price', 'sell_day', 'sell_price', 'inventory_money' ]],
-                    width=800,
-                    height=350
+    col2_3.dataframe(df_historic_trades[['buy_day', 'buy_price', 'sell_day', 'sell_price', 'inventory_money']],
+                     width=500,
+                     height=550
                     )
+    print(datetime.now())
    
 
 
