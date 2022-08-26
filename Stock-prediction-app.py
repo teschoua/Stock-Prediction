@@ -22,21 +22,21 @@ st.set_page_config(layout="wide")
 
 # st.image(image, width = 500)
 
-st.title('Stock Prediction App')
-st.markdown("""
-This app predict the value of a stock market
+# st.title('Stock Prediction App')
+# st.markdown("""
+# This app predict the value of a stock market
 
-"""
-)
+# """
+# )
 
 #----------------------------------------------#
 # About
-expander_bar = st.expander("About")
-expander_bar.markdown("""
-* **Python libraries** : pandas, streamlit, numpy, matplotlib
-* **Data Source** : CoinMartketCap
-* **Credit** : ...
-""")
+# expander_bar = st.expander("About")
+# expander_bar.markdown("""
+# * **Python libraries** : pandas, streamlit, numpy, matplotlib
+# * **Data Source** : CoinMartketCap
+# * **Credit** : ...
+# """)
 
 #----------------------------------------------#
 # Page layout 
@@ -57,23 +57,3 @@ show_prediction_page()
 #     show_prediction_page()
 # else :
 #     show_explore_page()
-
-
-# @st.cache
-# def load_data():
-    
-#     tickerSymbols = "GOOGL AAPL MSFT AMZN TSLA"
-
-#     data  = yf.download(tickers = tickerSymbols,
-#                         start = "2000-01-01",
-#                         end = "2022-08-17",
-#                         interval = "1d",
-#                         group_by = 'ticker',
-#                         # Mass Downloading
-#                         threads = True,
-#                         proxy = None
-#                         )
-#     return data
-
-# df = load_data()
-# df.to_csv('Dataset/GOOGL_AAPL_MSFT_AMZN_TSLA_2000_1d.csv')
