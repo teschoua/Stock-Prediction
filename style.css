@@ -6,6 +6,14 @@ div.block-container.css-18e3th9.egzxvld2 {
     /* padding-bottom:1rem; */
 }
 
+.githubButton {
+    background: url('/Images/Github.jpg') ;
+    cursor:pointer;
+    border:none;
+    width:100px;
+    height:100px;
+}
+
 /* Metrics */
 div.css-ocqkz7.e1tzin5v4 {
     color: rgb(65, 105, 225);
@@ -17,4 +25,56 @@ div.css-ocqkz7.e1tzin5v4 {
 div.css-1yycg8b   {
     /* margin-top: 90px; */
     /* margin-left : -45px; */
+}
+
+#button-media-github {
+    background-color: white;
+    border: none;
+}
+
+#button-media-github:hover {
+    opacity: 0.3
+}
+
+#button-media-linkedin {
+    background-color: white;
+    border: none;
+}
+
+#button-media-linkedin:hover {
+    opacity: 0.3
+}
+
+.hovertext {
+    position: relative;
+    border-bottom: 1px dotted black;
+  }
+  
+.hovertext:before {
+content: attr(data-hover);
+visibility: hidden;
+opacity: 1;
+width: 200px;
+background-color: #f0f2f6;
+color: black;
+text-align: center;
+border-radius: 5px;
+padding: 15px 0;
+transition: opacity 1s ease-in-out;
+
+position: absolute;
+z-index: 1;
+left: 0;
+top: 150%;
+font-size: 15px;
+}
+
+.hovertext:hover:before {
+opacity: 1;
+visibility: visible;
+}
+  
+.a {
+    vertical-align: middle;
+
 }
