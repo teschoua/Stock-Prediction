@@ -38,7 +38,7 @@ dict_models = {
                 "NVDA": "NVDA_BiLSTM_epochs_15_batchsize_32",
               }
 
-# @st.cache
+@st.cache(hash_funcs={dict: lambda _: None})
 def load_data(tickerSymbols, start_date, end_date=str(datetime.now().date()), ):
     
     data = yf.download(tickers=tickerSymbols,
@@ -50,8 +50,8 @@ def load_data(tickerSymbols, start_date, end_date=str(datetime.now().date()), ):
                        threads=True,
                        proxy=None
                        )
-    # data.to_csv('Dataset/TSLA_2010_1d.csv')
-    return data
+    cached_dict = {'data': data}
+    return cached_dict
 
 # Load Model LSTM
 def load_model(name_model):
@@ -213,7 +213,7 @@ def calculate_metrics_dashboard(df, initial_inventory_money):
     return balance, profits, profits_percentage, nb_trades, period_trading
 
 # Plot trades on real time serie
-@st.cache()
+@st.cache(hash_funcs={dict: lambda _: None})
 def plot_trades(df, df_historic_trades, mean_predictions):
 
     fig = go.Figure()
@@ -301,9 +301,10 @@ def plot_trades(df, df_historic_trades, mean_predictions):
     fig.update_xaxes(fixedrange = False, showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
     fig.update_yaxes(fixedrange = False, type="log", showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
     
-    return fig
+    cached_dict = {'fig': fig}
+    return cached_dict
 
-@st.cache()
+@st.cache(hash_funcs={dict: lambda _: None})
 def plot_table_trades(df, selector_stock):
 
     df['buy_price'] = round(df['buy_price'], 2)
@@ -361,10 +362,10 @@ def plot_table_trades(df, selector_stock):
                             font = dict(size = 30, color = "white")
                             ),
                      )
+    cached_dict = {'table': fig}    
+    return cached_dict
 
-    return fig
-
-@st.cache()
+@st.cache(hash_funcs={dict: lambda _: None})
 def plot_trades_equity(df, initial_inventory_money, start_date):
 
     df_inventory_money = df[['sell_day', 'inventory_money']]
@@ -420,7 +421,8 @@ def plot_trades_equity(df, initial_inventory_money, start_date):
     fig.update_xaxes(fixedrange = False, showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
     fig.update_yaxes(fixedrange = False, type="log", showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
 
-    return fig
+    cached_dict = {'fig': fig}
+    return cached_dict
 
 def show_prediction_page():
 
@@ -500,7 +502,7 @@ def show_prediction_page():
 
     # Load and Process the data
         # Load the dataset
-        df = load_data(selector_stock, str(start_date), str(selector_end_date))
+        df = load_data(selector_stock, str(start_date), str(selector_end_date))['data']
 
         # Scale Data
         df_scaled, scale_minmax = scale_data(df)
@@ -540,14 +542,13 @@ def show_prediction_page():
         col1_4.metric("Trades", nb_trades, str((trading_period[1]-trading_period[0]).days) + ' trading days')
 
     #----------------------------------------------#
-
-    # Display charts
+    # Display plot simulator
 
         st.set_option('deprecation.showPyplotGlobalUse', False)
         col1_3, col2_3 = st.columns([4,3], gap="small")
 
         fig = plot_trades(df, df_historic_trades, mean_predictions)
-        col1_3.plotly_chart(fig, use_container_width=True, config=dict({'scrollZoom': True, 'displayModeBar': False}))
+        col1_3.plotly_chart(fig['fig'], use_container_width=True, config=dict({'scrollZoom': True, 'displayModeBar': False}))
 
     # Display Dataframe (Trades)
 
@@ -555,14 +556,14 @@ def show_prediction_page():
         df_historic_trades = calculate_tendency(df_historic_trades)
 
         table_trades = plot_table_trades(df_historic_trades, selector_stock)
-        col2_3.plotly_chart(table_trades, use_container_width=True, config=dict({'displayModeBar': False}))
+        col2_3.plotly_chart(table_trades['table'], use_container_width=True, config=dict({'displayModeBar': False}))
         
 
     # Display Equity chart
         col1, col2, col3 = st.columns([1,3,1], gap="small")
 
         fig_inventory_money = plot_trades_equity(df_historic_trades, initial_inventory_money, start_date)
-        col2.plotly_chart(fig_inventory_money, use_container_width=True, config=dict({'scrollZoom': True, 'displayModeBar': False}))
+        col2.plotly_chart(fig_inventory_money['fig'], use_container_width=True, config=dict({'scrollZoom': True, 'displayModeBar': False}))
 
 
 
