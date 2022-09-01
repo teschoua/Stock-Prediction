@@ -11,8 +11,6 @@ import statistics
 import mplfinance as mpf
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
-from PIL import Image
-from st_clickable_images import clickable_images
 
 import tensorflow as tf
 # from tensorflow.keras.models import Sequential
