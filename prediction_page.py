@@ -196,6 +196,22 @@ def simulator(predictions,
 
     return df_historic_trades, logs
 
+def calculate_tendency(df):
+    
+    df['Tendency'] = round(((df['sell_price'] - df['buy_price']) / (df['buy_price'])) * 100, 2) 
+    return df
+
+# Calculate metrics for the Dashboard
+def calculate_metrics_dashboard(df, initial_inventory_money):
+
+    balance = round(df.iloc[-1:]['inventory_money'].values[0], 2)
+    nb_trades = round(len(df), 2)
+    profits = round(balance - initial_inventory_money, 2)
+    profits_percentage = round(((balance/initial_inventory_money) - 1) * 100, 2)
+    period_trading = [df.iloc[0]['buy_day'], df.iloc[-1]['sell_day']]
+
+    return balance, profits, profits_percentage, nb_trades, period_trading
+
 # Plot trades on real time serie
 def plot_trades(df, df_historic_trades, mean_predictions):
 
@@ -263,8 +279,8 @@ def plot_trades(df, df_historic_trades, mean_predictions):
         #          'xanchor' : 'left'
         #         },
         xaxis_rangeslider_visible=False,
-        width=1200,
-        height=675,
+        # width=1200,
+        height=600,
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -276,6 +292,7 @@ def plot_trades(df, df_historic_trades, mean_predictions):
         plot_bgcolor='rgb(255,255,255)',
         dragmode='pan',
         hovermode = "x unified",
+        
         # hoverinfo="name+z"
         
     )
@@ -285,79 +302,6 @@ def plot_trades(df, df_historic_trades, mean_predictions):
     fig.update_yaxes(fixedrange = False, type="log", showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
     
     return fig
-
-# Calculate metrics for the Dashboard
-def calculate_metrics_dashboard(df, initial_inventory_money):
-
-    balance = round(df.iloc[-1:]['inventory_money'].values[0], 2)
-    nb_trades = round(len(df), 2)
-    profits = round(balance - initial_inventory_money, 2)
-    profits_percentage = round(((balance/initial_inventory_money) - 1) * 100, 2)
-    period_trading = [df.iloc[0]['buy_day'], df.iloc[-1]['sell_day']]
-
-    return balance, profits, profits_percentage, nb_trades, period_trading
-
-def plot_trades_equity(df, initial_inventory_money, start_date):
-
-    df_inventory_money = df[['sell_day', 'inventory_money']]
-    df_inventory_money = df_inventory_money.set_index('sell_day')
-
-    # Add the first trade in the 1st row, with the initial money
-
-    new_row = pd.DataFrame({'sell_day': start_date,
-                            'inventory_money': initial_inventory_money
-                           }, index=[0]
-                          )
-    new_row = new_row.set_index('sell_day')
-    df_inventory_money = pd.concat([new_row, df_inventory_money], axis=0, ignore_index=False)
-
-    # Plot the figure
-
-    fig = go.Figure()
-
-    fig.add_trace(go.Scatter(x=df_inventory_money.index, 
-                             y=df_inventory_money['inventory_money'],
-                             name='Inventory Money Evolution',
-                             line=dict(color='rgb(41, 98, 255)')
-                             )
-                 )
-
-    fig.update_traces(mode="markers+lines", hovertemplate=None)
-
-    fig.update_layout(
-        xaxis_rangeslider_visible=False,
-        width=1200,
-        height=375,
-        title = {'text': "<b>Current Account Balance</b> ($)", 
-                                'font_family': "Source Sans Pro", 
-                                'font': dict(size=20),
-                                'x': 0
-                },
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="center",
-            x=0.5,
-            font = dict(size = 18, color = "black")
-        ),
-        plot_bgcolor='rgb(255,255,255)',
-        dragmode='pan',
-        hovermode = "x unified",
-        # hoverinfo="name+z"
-        
-    )
-    
-    # Axes
-    fig.update_xaxes(fixedrange = False, showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
-    fig.update_yaxes(fixedrange = False, type="log", showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
-
-    return fig
-
-def calculate_tendency(df):
-    
-    df['Tendency'] = round(((df['sell_price'] - df['buy_price']) / (df['buy_price'])) * 100, 2) 
-    return df
 
 def plot_table_trades(df, selector_stock):
 
@@ -400,18 +344,76 @@ def plot_table_trades(df, selector_stock):
                         ]
                     )
 
-    fig.update_layout(width=900,
-                      height=660,
-                      title = {'text': "<b>Trade Results</b><br>" + 
-                                        f"({selector_stock}/USD)", 
-                                'font_family': "Source Sans Pro", 
-                                'font': dict(size=23),
-                                'x' : 0.5
-                                },
-                      legend=dict(
-                        font = dict(size = 30, color = "white")
-                        ),
+    fig.update_layout(
+                        # width=900,
+                        height=600,
+                        title = {'text': "<b>Trade Results</b><br>" + 
+                                            f"({selector_stock}/USD)", 
+                                    'font_family': "Source Sans Pro", 
+                                    'font': dict(size=23),
+                                    'x' : 0.5
+                                    },
+                        legend=dict(
+                            font = dict(size = 30, color = "white")
+                            ),
                      )
+
+    return fig
+
+def plot_trades_equity(df, initial_inventory_money, start_date):
+
+    df_inventory_money = df[['sell_day', 'inventory_money']]
+    df_inventory_money = df_inventory_money.set_index('sell_day')
+
+    # Add the first trade in the 1st row, with the initial money
+
+    new_row = pd.DataFrame({'sell_day': start_date,
+                            'inventory_money': initial_inventory_money
+                           }, index=[0]
+                          )
+    new_row = new_row.set_index('sell_day')
+    df_inventory_money = pd.concat([new_row, df_inventory_money], axis=0, ignore_index=False)
+
+    # Plot the figure
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=df_inventory_money.index, 
+                             y=df_inventory_money['inventory_money'],
+                             name='Inventory Money Evolution',
+                             line=dict(color='rgb(41, 98, 255)')
+                             )
+                 )
+
+    fig.update_traces(mode="markers+lines", hovertemplate=None)
+
+    fig.update_layout(
+        xaxis_rangeslider_visible=False,
+        # width=1200,
+        # height=375,
+        title = {'text': "<b>Current Account Balance</b> ($)", 
+                                'font_family': "Source Sans Pro", 
+                                'font': dict(size=20),
+                                'x': 0
+                },
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="center",
+            x=0.5,
+            font = dict(size = 18, color = "black")
+        ),
+        plot_bgcolor='rgb(255,255,255)',
+        dragmode='pan',
+        hovermode = "x unified",
+        # hoverinfo="name+z"
+        
+    )
+    
+    # Axes
+    fig.update_xaxes(fixedrange = False, showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
+    fig.update_yaxes(fixedrange = False, type="log", showline=True, linewidth=2.5, linecolor='rgb(242,243,243)', gridcolor='rgb(242,243,243)', showspikes=True)
 
     return fig
 
@@ -492,13 +494,14 @@ def show_prediction_page():
         col1_8.metric("Trades", nb_trades, str((trading_period[1]-trading_period[0]).days) + ' trading days')
 
     #----------------------------------------------#
+
     # Display charts
 
         st.set_option('deprecation.showPyplotGlobalUse', False)
-        col1_3, col2_3 = st.columns([3,2], gap="small")
+        col1_3, col2_3 = st.columns([4,3], gap="small")
 
         fig = plot_trades(df, df_historic_trades, mean_predictions)
-        col1_3.plotly_chart(fig, use_container_width=False, config=dict({'scrollZoom': True}))
+        col1_3.plotly_chart(fig, use_container_width=True, config=dict({'scrollZoom': True}))
 
     # Display Dataframe (Trades)
 
@@ -506,7 +509,7 @@ def show_prediction_page():
         df_historic_trades = calculate_tendency(df_historic_trades)
 
         table_trades = plot_table_trades(df_historic_trades, selector_stock)
-        col2_3.plotly_chart(table_trades)
+        col2_3.plotly_chart(table_trades, use_container_width=True)
         
 
     # Display Equity chart
