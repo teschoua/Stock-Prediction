@@ -49,7 +49,7 @@ col2, col3 = st.columns((2,1))
 col1.header('Features')
 
 ## Sidebar - Select the page
-page = col1.selectbox('Predict Or Explore', ('Predict', 'Explore'))
+page = col1.selectbox('Predict', ('Predict', ''))
 
 show_prediction_page()
 
