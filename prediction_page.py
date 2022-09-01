@@ -316,29 +316,32 @@ def plot_table_trades(df, selector_stock):
     n = len(df)
     for col in df.columns:
         if col!='Tendency':
-            fill_color.append(['rgb(242,243,243)']*n)
+            fill_color.append(['#f0f2f6']*n)
             # fill_color.append(['black']*n)
         else:
             fill_color.append(df["color_row"].to_list())
 
     # Add up/down arrow on Tendency column
-    df['Tendency'] = df['Tendency'].apply(lambda x: u'\u2191' + ' ' + str(x) if x >= 0 else u'\u2193' + ' ' + str(x))
+    # df['Tendency'] = df['Tendency'].apply(lambda x: u'\u2191' + ' ' + str(x) + "%" if x >= 0 else u'\u2193' + ' ' + str(x) + "%")
+    df['Tendency'] = df['Tendency'].apply(lambda x: "+" + str(x) + "%" if x >= 0 else str(x) + "%")
     
     fig = go.Figure(data=[go.Table(
-                        # columnwidth = [133],
-                        header=dict(values=["Buy Day", "Buy Price ($)", "Sell Day", "Sell Price ($)", "Balance ($)", "Tendency (%)"],
+                        # columnwidth=[3,2,3,2,3,2],
+                        header=dict(values=["Buy Day", "Buy Price", "Sell Day", "Sell Price", "Balance", "Tendency"],
                                     fill_color='rgb(65, 105, 225)',
-                                    line_color='white',
+                                    # line_color='white',
                                     align='center',
-                                    font=dict(color='white', size=17),
+                                    font=dict(color='white', size=16),
+                                    height=40,
                                    ),
                         cells=dict(values=[df.buy_day, df.buy_price, df.sell_day, df.sell_price, df.inventory_money, df.Tendency],
                                 # fill_color='rgb(242,243,243)',
                                 fill_color=fill_color,
-                                line_color='white',
+                                # line_color='white',
                                 align='center',
-                                font=dict(color='black', size=16),
-                                height = 35
+                                font=dict(color='black', size=15),
+                                height = 39,
+                                # line=dict(color='rgb(242,243,243)')
                                   )
                                 )
                         ]
@@ -390,7 +393,7 @@ def plot_trades_equity(df, initial_inventory_money, start_date):
     fig.update_layout(
         xaxis_rangeslider_visible=False,
         # width=1200,
-        # height=375,
+        height=375,
         title = {'text': "<b>Current Account Balance</b> ($)", 
                                 'font_family': "Source Sans Pro", 
                                 'font': dict(size=20),
@@ -422,24 +425,35 @@ def show_prediction_page():
 #----------------------------------------------#
 # INPUTS
 
+    #----------------------------------------------#
+    # CSS 
+
     with open('style.css') as f :
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-    col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([2,1,2,2,2,2,1,1,2], gap="small")
+    #----------------------------------------------#
+    # Title
+    st.markdown("<h1 style='text-align: center; color: #212121; padding: 0px 1px 1rem'>Stock Prediction Simulator</h1>", unsafe_allow_html=True)
+    st.markdown("")
+
+    #----------------------------------------------#
+    # Load and Preprocessing
+
+    col1, col2, col3, col4, col5, col6 = st.columns([2,1,1,1,1,2], gap="small")
 
     # Selector Stock
-    selector_stock = col3.selectbox('Stock', list(stocks.keys()), index=0, format_func=lambda x: stocks[x])
+    selector_stock = col2.selectbox('Stock', list(stocks.keys()), index=0, format_func=lambda x: stocks[x])
     # Initial Inventory Money
 
-    initial_inventory_money = col4.number_input("Initial Money ($)", min_value=0, value=10000)
+    initial_inventory_money = col3.number_input("Initial Money ($)", min_value=0, value=10000)
 
     # Selector dates of trading
-    selector_start_date = col5.date_input("Start Date", 
+    selector_start_date = col4.date_input("Start Date", 
                                           value=datetime.strptime("2020-01-01", '%Y-%d-%m'), 
                                           min_value=None, 
                                           max_value=datetime.now().date()
                                          )
-    selector_end_date = col6.date_input("End Date", 
+    selector_end_date = col5.date_input("End Date", 
                                         max_value=datetime.now().date()
                                        )
     
@@ -485,13 +499,14 @@ def show_prediction_page():
     #----------------------------------------------#
     # Display Metrics : Currencies, Equity, Balance, Number of Trades
 
-        col1_1, col1_2, col1_3, col1_4, col1_5, col1_6, col1_7, col1_8, col1_9, col1_10, col1_11, col1_12 = st.columns([1,1,1,2,1,2,1,2,1,1,1,1], gap="small")
+        # col1_1, col1_2, col1_3, col1_4, col1_5, col1_6, col1_7, col1_8, col1_9, col1_10, col1_11, col1_12 = st.columns([1,1,1,2,1,2,1,2,1,1,1,1], gap="small")
+        col1_1, col1_2, col1_3, col1_4, col1_5 = st.columns([2,2,2,2,1], gap="small")
 
         balance, profits, profits_percentage, nb_trades, trading_period = calculate_metrics_dashboard(df_historic_trades, initial_inventory_money)
 
-        col1_4.metric("Balance", str(balance) + "$")
-        col1_6.metric("Profits", str(profits) + "$", str(profits_percentage) + "%")
-        col1_8.metric("Trades", nb_trades, str((trading_period[1]-trading_period[0]).days) + ' trading days')
+        col1_2.metric("Balance", str(balance) + "$")
+        col1_3.metric("Profits", str(profits) + "$", str(profits_percentage) + "%")
+        col1_4.metric("Trades", nb_trades, str((trading_period[1]-trading_period[0]).days) + ' trading days')
 
     #----------------------------------------------#
 
@@ -513,10 +528,10 @@ def show_prediction_page():
         
 
     # Display Equity chart
-        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1], gap="small")
+        col1, col2, col3 = st.columns([1,3,1], gap="small")
 
         fig_inventory_money = plot_trades_equity(df_historic_trades, initial_inventory_money, start_date)
-        col2.plotly_chart(fig_inventory_money, use_container_width=False, config=dict({'scrollZoom': True}))
+        col2.plotly_chart(fig_inventory_money, use_container_width=True, config=dict({'scrollZoom': True}))
 
 
 

@@ -41,15 +41,15 @@ st.set_page_config(layout="wide")
 #----------------------------------------------#
 # Page layout 
 ## 3 columns (col1 = sidebar, col2 and col3 = page content)
-col1 = st.sidebar
+# col1 = st.sidebar
 col2, col3 = st.columns((2,1))
 
 #----------------------------------------------#
 # Sidebar and Main panel
-col1.header('Features')
+# col1.header('Features')
 
 ## Sidebar - Select the page
-page = col1.selectbox('Predict', ('Predict', ''))
+# page = col1.selectbox('Predict', ('Predict', ''))
 
 show_prediction_page()
 
