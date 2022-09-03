@@ -51,18 +51,21 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#dataset">Dataset</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#yahoo-finance-api">Yahoo Finance API</a></li>
+        <li><a href="#preprocessing">Preprocessing</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#model">Model</a></li>
+    <li>
+      <a href="#results">Results</a>
+      <ul>
+        <li><a href="#metrics">Metrics</a></li>
+        <li><a href="#results-of-the-model">Results of the model</a></li>
+      </ul>
+    </li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -96,7 +99,7 @@
 <!-- Dataset -->
 ## Dataset
 
-### Yahoo Finance API (yfinance)
+### Yahoo Finance API
 
 #### a. Request
 ``` 
@@ -173,7 +176,7 @@ Non-trainable params: 0 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Measures the average magnitude of the error, without considering their direction. <br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAE = $\frac{1}{n} \Sigma_{i=1}^{n}|y_i-\hat{y_{i}}|$
 
-### Result of the model
+### Results of the model
 
 | MAE | MSE  | 
 | ------ | ------ | 
