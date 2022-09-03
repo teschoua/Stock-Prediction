@@ -164,8 +164,19 @@ Non-trainable params: 0 <br/>
 
 ### Metrics
 
-* **Mean Squared Error (MSE) : 
+* **Mean Squared Error (MSE)** : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Measures the average magnitude of the error. <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSE = $\frac{1}{n} \Sigma_{i=1}^n({y_{i}}-\hat{y_{i}})^2$
 
+* **Mean Absolute Error (MAE)** : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Measures the average magnitude of the error, without considering their direction. <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAE = $\frac{1}{n} \Sigma_{i=1}^{n}|y_i-\hat{y_{i}}|$
+
+### Result of the model
+
+| MAE | MSE  | 
+| ------ | ------ | 
+| 0.0460 | 0.0039 | 
 
 <!-- CONTACT -->
 ## Contact
