@@ -121,20 +121,50 @@ yfinance.download(tickers=TSLA,
 
 ### Preprocessing
 
+The goal of the model is to predict the close price for the next 7 days, based on the previous 30 days close prices.
+
 <a>
     <img src="Images/structure-data.png" >
 </a>
 
+This way we create a **train dataset** with a shape of **(batch_size, 30, 1)**, and a **test dataset** with a shape of **(batch_size, 7)**.
 
-
+<br/>
 
 <!-- Model -->
 ## Model
 
+* At the preprocessing step, I managed to have inputs with a 3D shape, perfect for a Bidirectional Long Short Time Memory (Bi-LSTM) model. 
 
+* The original **LSTM** or **Unidirectional LSTM** was developped to deal with the vanishing gradient problem, of the **Recurrent Neural Network (RNN)**, that was unabled to work with large inputs. <br/>
+This **LSTM** is applicable to tasks involving a **chronological sequence**, such as speech or handwritting recognition, machine translation, or stock prediction in our case. <br/>
+
+* The **Bidirectional LSTM model** works like the **unidirectional LSTM**, but it takes into consideration not only the past data, but also the future data, so that we can have a better understanding of the context.
+
+### Model summary
+
+
+|           Layer (type)        | Output Shape  | Param #  | 
+| ----------------------------- | --------------| -------- |
+| bidirectional (Bidirectional) | (None, 512)   | 528384   | 
+| dropout (Dropout)             | (None, 512)   | 0        | 
+| dense (Dense)                 | (None, 7)     | 3591     | 
+
+
+Total params: 531,975 <br/>
+Trainable params: 531,975 <br/>
+Non-trainable params: 0 <br/>
+
+
+<br/>
+<br/>
 
 <!-- Results -->
 ## Results
+
+### Metrics
+
+* **Mean Squared Error (MSE) : 
 
 
 <!-- CONTACT -->
