@@ -35,7 +35,7 @@
 
 * Stock Prediction Simulator is a Web Application that allows you to simulate trades on a given period, based on a machine learning model (Bi-LSTM). <br/>
 * The application offers a dynamic candlestick chart, where you can supervise the predicted price, the information about the trades made, and the actual price of the stock. <br/>
-* A trade table and an balance chart are also avaible, so that you can the evolution of your account balance trade by trade.
+* A trade table and an balance chart are also avaible, so that you can track the evolution of your account balance trade by trade.
 
 <br />
 <br />
