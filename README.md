@@ -31,10 +31,11 @@
 
 <h1 align="center">Stock Prediction Simulator</h1>
 
-  <p align="center">
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an 		unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  </p>
 </div>
+
+* Stock Prediction Simulator is a Web Application that allows you to simulate trades on a given period, based on a machine learning model (Bi-LSTM). <br/>
+* The application offers a dynamic candlestick chart, where you can supervise the predicted price, the information about the trades made, and the actual price of the stock. <br/>
+* A trade table and an balance chart are also avaible, so that you can track the evolution of your account balance trade by trade.
 
 <br />
 <br />
@@ -121,28 +122,70 @@ yfinance.download(tickers=TSLA,
 
 ### Preprocessing
 
+The goal of the model is to predict the close price for the next 7 days, based on the previous 30 days close prices.
+
 <a>
     <img src="Images/structure-data.png" >
 </a>
 
+This way we create a **train dataset** with a shape of **(batch_size, 30, 1)**, and a **test dataset** with a shape of **(batch_size, 7)**.
 
-
+<br/>
 
 <!-- Model -->
 ## Model
 
+* At the preprocessing step, I managed to have inputs with a 3D shape, perfect for a Bidirectional Long Short Time Memory (Bi-LSTM) model. 
 
+* The original **LSTM** or **Unidirectional LSTM** was developped to deal with the vanishing gradient problem, of the **Recurrent Neural Network (RNN)**, that was unabled to work with large inputs. <br/>
+This **LSTM** is applicable to tasks involving a **chronological sequence**, such as speech or handwritting recognition, machine translation, or stock prediction in our case. <br/>
+
+* The **Bidirectional LSTM model** works like the **unidirectional LSTM**, but it takes into consideration not only the past data, but also the future data, so that we can have a better understanding of the context.
+
+### Model summary
+
+
+|           Layer (type)        | Output Shape  | Param #  | 
+| ----------------------------- | --------------| -------- |
+| bidirectional (Bidirectional) | (None, 512)   | 528384   | 
+| dropout (Dropout)             | (None, 512)   | 0        | 
+| dense (Dense)                 | (None, 7)     | 3591     | 
+
+
+Total params: 531,975 <br/>
+Trainable params: 531,975 <br/>
+Non-trainable params: 0 <br/>
+
+
+<br/>
+<br/>
 
 <!-- Results -->
 ## Results
 
+### Metrics
+
+* **Mean Squared Error (MSE)** : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Measures the average magnitude of the error. <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSE = $\frac{1}{n} \Sigma_{i=1}^n({y_{i}}-\hat{y_{i}})^2$
+
+* **Mean Absolute Error (MAE)** : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Measures the average magnitude of the error, without considering their direction. <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAE = $\frac{1}{n} \Sigma_{i=1}^{n}|y_i-\hat{y_{i}}|$
+
+### Result of the model
+
+| MAE | MSE  | 
+| ------ | ------ | 
+| 0.0460 | 0.0039 | 
 
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Thibaut ESCHOUA
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [Stock Prediction Simulator](http://ec2-54-90-68-112.compute-1.amazonaws.com/) <br/>
+Linkedin : [Linkedin Thibaut ESCHOUA](https://www.linkedin.com/in/thibaut-eschoua/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -160,7 +203,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
+[linkedin-url]: https://www.linkedin.com/in/thibaut-eschoua/
 [product-screenshot]: images/screenshot.png
 [Python-logo]: https://img.shields.io/badge/Python-20232A?style=for-the-badge&logo=python&logoColor=white
 [Yahoo-Finance]: https://img.shields.io/badge/Yahoo%20Finance%20API-6001D2?style=for-the-badge&logo=yahoo&logoColor=white
