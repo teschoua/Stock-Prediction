@@ -74,9 +74,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<a href="http://ec2-54-90-68-112.compute-1.amazonaws.com/">
-    <img src="Images/Simulator-about.jpg" alt="Logo" >
-</a>
+
+
+https://user-images.githubusercontent.com/48710939/188310678-34db1ab9-db3a-4a08-83c1-2bc069e101ee.mp4
+
+
 
 <br />
 <br />
