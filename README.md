@@ -25,8 +25,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="Images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/teschoua/Stock-Prediction">
+    <img src="Images/monitoring.png" alt="Logo" width="80" height="80">
   </a>
 
 <h1 align="center">Stock Prediction Simulator</h1>
@@ -36,7 +36,7 @@
 * Stock Prediction Simulator is a Web Application that allows you to simulate trades on a given period, based on a machine learning model (Bi-LSTM). <br/>
 * The application offers a dynamic candlestick chart, where you can supervise the predicted price, the information about the trades made, and the actual price of the stock. <br/>
 * A trade table and an balance chart are also avaible, so that you can track the evolution of your account balance trade by trade.
-
+* Web App Link : http://ec2-54-90-68-112.compute-1.amazonaws.com/
 <br />
 <br />
 
@@ -51,18 +51,21 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#dataset">Dataset</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#yahoo-finance-api">Yahoo Finance API</a></li>
+        <li><a href="#preprocessing">Preprocessing</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#model">Model</a></li>
+    <li>
+      <a href="#results">Results</a>
+      <ul>
+        <li><a href="#metrics">Metrics</a></li>
+        <li><a href="#results-of-the-model">Results of the model</a></li>
+      </ul>
+    </li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -71,9 +74,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<a href="http://ec2-54-90-68-112.compute-1.amazonaws.com/">
-    <img src="Images/Simulator-about.jpg" alt="Logo" >
-</a>
+
+
+https://user-images.githubusercontent.com/48710939/188310678-34db1ab9-db3a-4a08-83c1-2bc069e101ee.mp4
+
+
 
 <br />
 <br />
@@ -96,7 +101,7 @@
 <!-- Dataset -->
 ## Dataset
 
-### Yahoo Finance API (yfinance)
+### Yahoo Finance API
 
 #### a. Request
 ``` 
@@ -173,7 +178,7 @@ Non-trainable params: 0 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Measures the average magnitude of the error, without considering their direction. <br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAE = $\frac{1}{n} \Sigma_{i=1}^{n}|y_i-\hat{y_{i}}|$
 
-### Result of the model
+### Results of the model
 
 | MAE | MSE  | 
 | ------ | ------ | 
