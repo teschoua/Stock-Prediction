@@ -138,10 +138,10 @@ This way we create a **train dataset** with a shape of **(batch_size, 30, 1)**, 
 <!-- Model -->
 ## Model
 
-* At the preprocessing step, I managed to have inputs with a 3D shape, perfect for a Bidirectional Long Short Time Memory (Bi-LSTM) model. 
+* At the preprocessing step, I managed to have inputs with a 3D shape, which is perfect for a Bidirectional Long Short Time Memory (Bi-LSTM) model. 
 
 * The original **LSTM** or **Unidirectional LSTM** was developped to deal with the vanishing gradient problem, of the **Recurrent Neural Network (RNN)**, that was unabled to work with large inputs. <br/>
-This **LSTM** is applicable to tasks involving a **chronological sequence**, such as speech or handwritting recognition, machine translation, or stock prediction in our case. <br/>
+This **LSTM** is applicable to tasks involving a **chronological sequences**, such as speech or handwritting recognition, machine translation, or stock prediction in our case. <br/>
 
 * The **Bidirectional LSTM model** works like the **unidirectional LSTM**, but it takes into consideration not only the past data, but also the future data, so that we can have a better understanding of the context.
 
