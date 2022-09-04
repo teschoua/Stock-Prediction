@@ -1,19 +1,11 @@
-import requests
 import streamlit as st
-import pandas as pd 
-from PIL import Image
-import base64
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
-import requests
-import json 
-import time
-import yfinance as yf
 from prediction_page import show_prediction_page
 
 # Page layout
-st.set_page_config(layout="wide")
+st.set_page_config( layout="wide",
+                    page_title="Stock Prediction Simulator",
+                    page_icon="./Images/monitoring.png"
+                  )
 
 
 # Title
