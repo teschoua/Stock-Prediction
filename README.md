@@ -25,7 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/teschoua/Stock-Prediction">
+  <a href="http://ec2-18-212-239-239.compute-1.amazonaws.com/">
     <img src="Images/monitoring.png" alt="Logo" width="80" height="80">
   </a>
 
